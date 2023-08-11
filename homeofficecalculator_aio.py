@@ -1,5 +1,5 @@
 # Home office calculator AiO Package
-# version 0.2.0
+# version 0.2.1
 # 2023/08/11
 
 from bs4 import BeautifulSoup as bs
@@ -135,7 +135,7 @@ def Homecalculator():
         eintraege.pop(0)
     for eintrag in eintraege:
         date = dt.strftime(dt.strptime(eintrag('td')[0].text, "%d.%m.%Y"), "%Y/%m/%d")
-        if date in dates.keys():
+        if date in dates:
             pass
         else:
             continue
