@@ -155,7 +155,7 @@ def Homecalculator():
             "Ende" : end
         }
         Tagebuecher[date] = Tagebuch
-    donetage = len(hometage) + len(orttage)
+    donetage = hometage) + orttage
     todotage = len(dates) - donetage
     homepercent = (hometage / donetage) * 100
     ortpercent = (orttage / donetage) * 100
