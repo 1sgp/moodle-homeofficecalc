@@ -1,5 +1,5 @@
 # Home office calculator AiO Package
-# version 0.2.2
+# version 0.2.3
 # 2023/12/21
 
 from bs4 import BeautifulSoup as bs
@@ -33,42 +33,16 @@ def clear():
 
 def enter_creds():
     print("Please enter your credentials. You may correct them, when the login doesn't work.")
-    User = input('Username: ')
-    Pass = gp(prompt='Password: ')
-    if User == "":
-        print('Please enter a username.')
+    while True:
         User = input('Username: ')
-    elif Pass == "":
-        Pass = gp(prompt='Please enter a password: ')
-    else:
-        print('Credentials accepted.')
-    sleep(0.99)
-    clear()
-    return User, Pass
-
-def check_creds(User, Pass):
-    if User == "":
-        User = input('Username: ')
-    else:
-        print('Username: ', User)
-        changeit = input('Do you want to change the username? (Y/N):')
-        if changeit.lower() == "y":
-            User = input('Username: ')
-            clear()
-            print(User)
-    if Pass == "":
-        print('Please enter a valid password')
-        Pass = gp(prompt='Enter a password please: ')
-    else:
-        pwc = input('Do you want to VISIBLY check your password? (Y/N):')
-    if pwc.lower() == "y":
-        print('Username: ', User)
-        print('Password: ', Pass)
-        sleep(3)
-        clear()
-    pwr = input('Do you want to change your password? (Y/N):')
-    if pwr.lower() == "y":
-        Pass = gp(prompt='Enter a new password please: ')      
+        if User == "":
+            print('Please enter a real username.')
+            continue
+        Pass = gp(prompt='Password: ')
+        if Pass == "" or len(Pass) < 4:
+            print('Please enter a real password.')
+            continue
+        break
     return User, Pass
 
 def login_user(browser, User, Pass):
@@ -84,11 +58,9 @@ def login_user(browser, User, Pass):
         password.send_keys(Pass)
         loginbut.click()
         sleep(1)
-        ungueltigDE = "Ungültige Anmeldedaten. Versuchen Sie es noch einmal!"
-        ungueltigEN = "Invalid login, please try again"
-        if ungueltigDE in browser.page_source or ungueltigEN in browser.page_source:
+        if "Ungültige Anmeldedaten" or "Invalid login" in browser.page_source:
             #print("Wrong credentials. Please check your input!")
-            User, Pass = check_creds(User, Pass)
+            User, Pass = enter_creds()
             sleep(1.5)
             login_user(browser, User, Pass)
         else:
